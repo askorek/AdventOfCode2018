@@ -21,9 +21,13 @@ def insert_rect(rect, fabric):
     y_width = rect[2][0]
     x_width = rect[2][1]
 
+    was_overlapping = False
     for i in range(x_begin, x_begin + x_width):
         for j in range(y_begin, y_begin + y_width):
+            if fabric[i][j] > 1:   # checking on second pass if something was already put here
+                was_overlapping = True
             fabric[i][j] += 1
+    return was_overlapping
 
 
 with open("day_03.txt") as f:
@@ -42,3 +46,8 @@ for line in fabric:
         if el > 1:
             overlapping += 1
 print(overlapping)
+
+for line in data:
+    rect = parse_line(line)
+    if not insert_rect(rect, fabric):
+        print(rect)
